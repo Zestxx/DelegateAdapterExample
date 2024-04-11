@@ -4,24 +4,41 @@ import com.delegate.adapter.core.Payloadable
 
 data class FirstModel(
     val id: Int,
-    val title: String,
-    val description: String,
+    val label: String,
+    val isChecked: Boolean = false,
+    val isSwitchEnabled: Boolean = false,
 )
 
 fun FirstModel.getPayload(other: FirstModel): Payloadable {
-    val updateFields = buildMap<String, Any> {
-        if (other.title != title) {
-            put("title", other.title)
-        }
+    val result = FirstModelPayload(
+        label = if (other.label != label) {
+            other.label
+        } else null,
 
-        if (other.description != description) {
-            put("description", other.description)
-        }
-    }
-    return if (updateFields.isEmpty())
+        isChecked = if (other.isChecked != isChecked) {
+            other.isChecked
+        } else null,
+
+        isSwitchEnabled = if (other.isSwitchEnabled != isSwitchEnabled) {
+            other.isSwitchEnabled
+        } else null,
+    )
+
+    return if (result.isEmpty) {
         Payloadable.None
-    else
-        FirstModelPayload(fields = updateFields)
+    } else {
+        result
+    }
 }
 
-data class FirstModelPayload(val fields: Map<String, Any>) : Payloadable
+data class FirstModelPayload(
+    val label: String? = null,
+    val isChecked: Boolean? = null,
+    val isSwitchEnabled: Boolean? = null,
+) : Payloadable {
+    val isEmpty: Boolean
+        get() = isChecked == null
+                && label == null
+                && isSwitchEnabled == null
+
+}
