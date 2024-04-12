@@ -10,8 +10,8 @@ data class FirstAdapterItem(val data: FirstModel) : DelegateAdapterItem {
     override fun content(): Int = data.hashCode()
 
     override fun payload(other: Any): Payloadable {
-        return (other as? FirstModel)
-            ?.let { data.getPayload(other) }
+        return (other as? FirstAdapterItem)
+            ?.let { data.getPayload(other.data) }
             ?: Payloadable.None
     }
 }

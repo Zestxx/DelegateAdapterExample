@@ -48,6 +48,7 @@ class CompositeAdapter(
         private val delegates: SparseArray<Delegate> =
             SparseArray()
 
+        @Suppress("UNCHECKED_CAST")
         fun add(delegate: DelegateAdapter<out DelegateAdapterItem, *>): Builder {
             delegates.put(count++, delegate as Delegate)
             return this
